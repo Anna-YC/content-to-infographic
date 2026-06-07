@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.DS_Store
+infographic_*.png
+infographic_*.jpg

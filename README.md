@@ -10,6 +10,29 @@
 
 把一段"看起来很专业但普通人懒得看"的文字内容，变成"一眼就能看懂的视觉海报"。
 
+## 效果预览
+
+| 样式1：深色科技风 | 样式2：渐变流体风 | 样式3：轻松学习风 |
+|---|---|---|
+| <img src="examples/style1-cn-preview.jpg" alt="样式1：深色科技风" width="260"> | <img src="examples/style2-cn-preview.jpg" alt="样式2：渐变流体风" width="260"> | <img src="examples/style3-cn-preview.jpg" alt="样式3：轻松学习风" width="260"> |
+
+<details>
+<summary>查看更多样式预览</summary>
+
+| 样式4：宫崎骏风格 | 样式5：复古海报风 | 样式6：赛博霓虹风 |
+|---|---|---|
+| <img src="examples/style4-cn-preview.jpg" alt="样式4：宫崎骏风格" width="260"> | <img src="examples/style5-cn-preview.jpg" alt="样式5：复古海报风" width="260"> | <img src="examples/style6-cn-preview.jpg" alt="样式6：赛博霓虹风" width="260"> |
+
+| 样式7：自然森系风 | 样式8：杂志编辑风 | 样式9：蛋仔风格 |
+|---|---|---|
+| <img src="examples/style7-cn-preview.jpg" alt="样式7：自然森系风" width="260"> | <img src="examples/style8-cn-preview.jpg" alt="样式8：杂志编辑风" width="260"> | <img src="examples/style9-cn-preview.jpg" alt="样式9：蛋仔风格" width="260"> |
+
+| 样式10：新海诚风格 | 样式11：素描风格 |
+|---|---|
+| <img src="examples/style10-cn-preview.jpg" alt="样式10：新海诚风格" width="260"> | <img src="examples/style11-cn-preview.jpg" alt="样式11：素描风格" width="260"> |
+
+</details>
+
 ## 适用场景
 
 | 场景 | 示例 |

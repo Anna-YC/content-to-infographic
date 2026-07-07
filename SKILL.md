@@ -1,7 +1,6 @@
 ---
 name: content-to-infographic
 description: 将内容（文字、知识、插件信息、产品介绍等）转化为专业视觉海报。当用户要求"把这个做成信息图"、"生成插件介绍图"、"做一个科普海报"、"做能力对比图"、"用样式1/2/3/4/5/6/7/8/9/10/11"，或讨论信息图、视觉卡片、图说生成时触发。
-version: "4.2.0"
 ---
 
 # Content To Infographic
@@ -15,15 +14,22 @@ version: "4.2.0"
 
 ## ⚙️ 首次配置（必读）
 
-首次使用前，请在你的运行环境中设置以下环境变量（例如 Codex、Claude Code 或其他支持环境变量的 Agent 环境）：
+首次使用前，请在运行环境中配置生图服务凭证。凭证和服务地址只放在本机配置里，不写入公开文档，也不要提交到仓库。
 
 | 环境变量 | 说明 | 示例 |
 |---------|------|------|
-| `IMAGE_GEN_API_KEY` | 图片生成服务 API Key | `your-api-key` |
-| `IMAGE_GEN_API_URL` | API 端点（可选，可替换为任意 OpenAI-compatible 图片生成接口） | `https://api.example.com/v1/images/generations` |
 | `INFOGRAPHIC_FOOTER_BRAND` | 样式1-3的默认落款品牌（可选） | `Your Community` |
+| `INFOGRAPHIC_FAST_MODE` | 快速模式，适合测试和草稿（可选） | `1` |
+| `INFOGRAPHIC_IMAGE_SIZE` | 覆盖默认尺寸（可选） | `864x1536` |
+| `INFOGRAPHIC_COMPRESS_JPG` | 是否压缩为 JPG（可选） | `1` |
 
-> ⚠️ **未配置 `IMAGE_GEN_API_KEY` 将无法生成图片**，脚本启动时会报错并提示填写。
+> ⚠️ 生成服务凭证缺失时无法生成图片。脚本会读取本机环境变量或 `.env` 文件，但公开仓库不保存这些配置。
+
+### 本地配置文件
+
+脚本会自动读取 `GPT_IMAGE_CONFIG` 指定的 `.env` 文件；未指定时读取 `~/.config/gpt-image/.env`。环境变量已存在时，以当前环境变量为准。
+
+> 公开发布时只提交脚本和说明，不提交 `.env`。
 
 ### 自定义落款
 
@@ -62,17 +68,16 @@ version: "4.2.0"
 
 ---
 
-## API 配置参考
+## 生成配置参考
 
 ```
 模型：gpt-image-2
-示例端点：https://api.openai.com/v1/images/generations
-Header：User-Agent: OpenAI/1.0
-超时：300秒
+超时：由本机配置控制
 尺寸：1024x1792（竖版9:16）
+快速模式：INFOGRAPHIC_FAST_MODE=1 时使用更轻的默认参数
 ```
 
-> 📌 **实际端点和 Key 由用户在自己的环境中配置**。如果使用代理、网关或其他 OpenAI-compatible 服务，请将 `IMAGE_GEN_API_URL` 改成对应的 `/images/generations` 端点。
+> 📌 使用者只需要运行 `scripts/generate_infographic.py`。服务地址和凭证由本机环境负责，不写入公开文档。
 
 ---
 
@@ -343,45 +348,20 @@ DENSE infographic [比例] [背景描述],
 - 样式1-3：可加自定义落款（如 `Corner small: 'By Your Brand ♦ 2026.05.25'`）。若用户未指定，优先使用环境变量 `INFOGRAPHIC_FOOTER_BRAND`；未设置时使用 `Your Brand` 占位。
 - 样式4-11：**不加落款**
 
-### Step 4 — 调用生图 API
+### Step 4 — 调用生图脚本
 
-> ⚠️ 调用前请确保已配置 `IMAGE_GEN_API_KEY` 环境变量，否则脚本会报错并提示配置。
+> ⚠️ 调用前请确保本机已配置生图服务凭证。直接运行脚本即可，不要把凭证或服务地址写进 prompt、文档或仓库。
 
-```python
-import urllib.request, json, ssl, os
-
-# 从环境变量读取配置
-API_KEY = os.environ.get("IMAGE_GEN_API_KEY", "")
-API_URL = os.environ.get(
-    "IMAGE_GEN_API_URL",
-    "https://api.openai.com/v1/images/generations"
-)
-
-if not API_KEY:
-    raise EnvironmentError(
-        "IMAGE_GEN_API_KEY is not set. "
-        "请在你的运行环境中设置 IMAGE_GEN_API_KEY 环境变量。"
-    )
-
-payload = {"model": "gpt-image-2", "prompt": "<Step3的Prompt>", "size": "1024x1792", "n": 1}
-data = json.dumps(payload).encode('utf-8')
-
-req = urllib.request.Request(API_URL, data=data,
-    headers={"Content-Type": "application/json",
-             "Authorization": f"Bearer {API_KEY}",
-             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"})
-
-ctx = ssl._create_unverified_context()
-with urllib.request.urlopen(req, context=ctx, timeout=300) as resp:
-    result = json.load(resp)
-
-# 保存PNG
-with open("/tmp/output.png", 'wb') as f:
-    f.write(base64.b64decode(result['data'][0]['b64_json']))
-
-# 转JPG压缩
-os.system("sips -s format jpeg -s formatOptions 82 --resampleWidth 1024 /tmp/output.png --out /tmp/output.jpg")
+```bash
+# 直接运行脚本，传入 prompt 和输出路径
+python3 scripts/generate_infographic.py "<Step3的Prompt>" /tmp/output.png
 ```
+
+脚本内部逻辑（无需手动实现）：
+1. 读取本机配置文件或运行环境变量
+2. 调用已配置的生图服务
+3. 保存 PNG
+4. 按配置压缩为 JPG
 
 ### Step 5 — 交付图片
 
@@ -440,9 +420,9 @@ os.system("sips -s format jpeg -s formatOptions 82 --resampleWidth 1024 /tmp/out
 
 | 问题 | 解决 |
 |-----|------|
-| `IMAGE_GEN_API_KEY is not set` | 在你的运行环境中添加 `IMAGE_GEN_API_KEY` 环境变量 |
-| API超时（502/504） | 精简Prompt重试，超时设300秒 |
-| 403 Forbidden | 确认 Key 有效，检查环境变量配置 |
+| 提示缺少凭证 | 在本机 `.env` 或运行环境中设置生图服务凭证 |
+| 生成超时 | 精简 Prompt，或提高本机超时配置 |
+| 生成速度慢 | 测试/草稿用 `INFOGRAPHIC_FAST_MODE=1`；最终图再使用高清配置 |
 | 发送或上传失败 | 优先返回本地文件路径，再由具体 Agent 环境处理附件发送 |
 | 图片模糊 | 确认sips压缩比例≥82 |
 | 图片包含二维码 | 从Prompt中删除所有QR码相关描述，重新生成 |
@@ -497,21 +477,20 @@ os.system("sips -s format jpeg -s formatOptions 82 --resampleWidth 1024 /tmp/out
    - 指定了 → 用指定样式
    - 未指定 → **随机选样式4/5/6/7/8/9/10/11其中之一**
 3. 按模板构建Prompt（注意落款规则：样式1-3有落款，4-11无落款）
-4. 调用API生成（**API Key 从环境变量 `IMAGE_GEN_API_KEY` 读取**）
-5. sips压缩转JPG
+4. **直接运行脚本** `python3 scripts/generate_infographic.py "<prompt>" /tmp/output.png`
+5. 脚本自动完成 sips 压缩转 JPG
 6. 返回本地图片路径，或按当前 Agent 环境支持的方式发送附件
 
 ### 关键约束（必须遵守）
 1. **不生成二维码**：所有图片均不生成二维码，Prompt中禁止包含QR码相关描述
 2. **未指定样式**：随机选4-11，不加落款，且**不告诉用户选了哪个样式**
+3. **不在公开内容写入凭证或服务地址**：这些只放在本机配置中
 
 ### 关键配置
-- API Key：`IMAGE_GEN_API_KEY`（**必须配置**）
-- API URL：`IMAGE_GEN_API_URL`（可选，有默认值）
 - 默认落款品牌：`INFOGRAPHIC_FOOTER_BRAND`（可选，仅样式1-3使用）
 - 模型：gpt-image-2
 - 尺寸：1024x1792
-- 超时：300秒
+- 快速模式：`INFOGRAPHIC_FAST_MODE=1`
 
 ### 落款规则（重要）
 | 样式 | 是否有落款 |

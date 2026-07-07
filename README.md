@@ -10,29 +10,6 @@
 
 把一段"看起来很专业但普通人懒得看"的文字内容，变成"一眼就能看懂的视觉海报"。
 
-## 效果预览
-
-| 样式1：深色科技风 | 样式2：渐变流体风 | 样式3：轻松学习风 |
-|---|---|---|
-| <img src="examples/style1-cn-preview.jpg" alt="样式1：深色科技风" width="260"> | <img src="examples/style2-cn-preview.jpg" alt="样式2：渐变流体风" width="260"> | <img src="examples/style3-cn-preview.jpg" alt="样式3：轻松学习风" width="260"> |
-
-<details>
-<summary>查看更多样式预览</summary>
-
-| 样式4：宫崎骏风格 | 样式5：复古海报风 | 样式6：赛博霓虹风 |
-|---|---|---|
-| <img src="examples/style4-cn-preview.jpg" alt="样式4：宫崎骏风格" width="260"> | <img src="examples/style5-cn-preview.jpg" alt="样式5：复古海报风" width="260"> | <img src="examples/style6-cn-preview.jpg" alt="样式6：赛博霓虹风" width="260"> |
-
-| 样式7：自然森系风 | 样式8：杂志编辑风 | 样式9：宫崎骏风格 II |
-|---|---|---|
-| <img src="examples/style7-cn-preview.jpg" alt="样式7：自然森系风" width="260"> | <img src="examples/style8-cn-preview.jpg" alt="样式8：杂志编辑风" width="260"> | <img src="examples/style9-cn-preview.jpg" alt="样式9：宫崎骏风格 II" width="260"> |
-
-| 样式10：新海诚风格 | 样式11：素描风格 |
-|---|---|
-| <img src="examples/style10-cn-preview.jpg" alt="样式10：新海诚风格" width="260"> | <img src="examples/style11-cn-preview.jpg" alt="样式11：素描风格" width="260"> |
-
-</details>
-
 ## 适用场景
 
 | 场景 | 示例 |
@@ -45,21 +22,28 @@
 
 ## ⚙️ 首次配置
 
-使用前需在你的运行环境中设置环境变量：
+使用前需在你的运行环境中配置生图服务凭证。推荐放在本机 `.env` 文件里，不要提交到仓库。
+
+脚本会自动读取 `GPT_IMAGE_CONFIG` 指定的 `.env` 文件；未指定时读取 `~/.config/gpt-image/.env`。环境变量已存在时，以当前环境变量为准。
+
+常用非敏感配置：
 
 | 环境变量 | 说明 |
 |---------|------|
-| `IMAGE_GEN_API_KEY` | 图片生成服务 API Key（**必填**） |
-| `IMAGE_GEN_API_URL` | API 端点（可选，可替换为任意 OpenAI-compatible 图片生成接口） |
+| `GPT_IMAGE_MODEL` | 图像模型名称 |
+| `GPT_IMAGE_CURL_MAX_TIME` | 请求超时秒数 |
+| `GPT_IMAGE_QUALITY` | 生图质量，默认 `medium` |
+| `INFOGRAPHIC_FAST_MODE` | 快速模式，适合测试和草稿 |
+| `INFOGRAPHIC_IMAGE_SIZE` | 覆盖默认尺寸 |
+| `INFOGRAPHIC_COMPRESS_JPG` | 是否压缩为 JPG，默认 `1` |
 | `INFOGRAPHIC_FOOTER_BRAND` | 样式1-3默认落款品牌（可选） |
 
-> ⚠️ 未配置 `IMAGE_GEN_API_KEY` 将无法生成图片。
+> ⚠️ 凭证和服务地址只放在本机配置中，不要写入公开文档或提交到仓库。
 
 示例：
 
 ```bash
-export IMAGE_GEN_API_KEY="your-api-key"
-export IMAGE_GEN_API_URL="https://api.openai.com/v1/images/generations"
+export GPT_IMAGE_MODEL="gpt-image-2"
 export INFOGRAPHIC_FOOTER_BRAND="Your Community"
 ```
 
@@ -101,15 +85,15 @@ export INFOGRAPHIC_FOOTER_BRAND="Your Community"
 
 ## 技术细节（给开发者的）
 
-### API配置
+### 生成配置
 ```
-模型：gpt-image-2
-示例端点：https://api.openai.com/v1/images/generations
-Header：User-Agent: OpenAI/1.0
-超时：300秒
-尺寸：1024x1792（9:16竖版）
+图像模型：由 GPT_IMAGE_MODEL 控制
+超时：由 GPT_IMAGE_CURL_MAX_TIME 控制
+尺寸：1024x1792（INFOGRAPHIC_IMAGE_SIZE）
+质量：medium（GPT_IMAGE_QUALITY）
+快速模式：INFOGRAPHIC_FAST_MODE=1 时默认 864x1536 + low
 
-API Key 和实际端点由环境变量 IMAGE_GEN_API_KEY / IMAGE_GEN_API_URL 配置。如果使用代理、网关或其他 OpenAI-compatible 服务，请将 `IMAGE_GEN_API_URL` 改成对应的 `/images/generations` 端点。
+凭证和服务地址由本机环境变量或 `.env` 文件提供，公开仓库不保存这些配置。
 ```
 
 ### 核心Prompt公式
@@ -132,14 +116,17 @@ A: 精简核心要点，每张图聚焦一个主题。超长内容可以分多�
 **Q: 生成的图片文字看不清？**
 A: Prompt中加高密度关键词，图片会更紧凑。
 
-**Q: API超时了怎么办？**
-A: 精简Prompt重试，超时时间已设300秒。
+**Q: 生成超时了怎么办？**
+A: 精简Prompt重试，或把 `GPT_IMAGE_CURL_MAX_TIME` 设置为 `900`。
+
+**Q: 生成速度太慢怎么办？**
+A: 草稿和测试用 `INFOGRAPHIC_FAST_MODE=1`；正式发布图再用 `GPT_IMAGE_QUALITY=high INFOGRAPHIC_IMAGE_SIZE=1024x1792`。如果不需要 JPG，可设置 `INFOGRAPHIC_COMPRESS_JPG=0` 跳过本地压缩。
 
 **Q: 用户想要不同风格怎么办？**
 A: 换样式即可，三种样式覆盖大部分场景。
 
-**Q: 提示 IMAGE_GEN_API_KEY is not set？**
-A: 在你的运行环境中添加 `IMAGE_GEN_API_KEY` 环境变量。
+**Q: 提示缺少凭证怎么办？**
+A: 在本机 `.env` 或运行环境中设置生图服务凭证，不要把凭证提交到仓库。
 
 ## 样式一览
 

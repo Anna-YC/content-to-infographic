@@ -106,7 +106,6 @@ def generate_image(prompt: str, output_path: str | None = None) -> str:
 
     image_command = resolve_image_command()
     ratio = os.environ.get("INFOGRAPHIC_ASPECT_RATIO", "9:16")
-    fast_mode = env_flag("INFOGRAPHIC_FAST_MODE")
     # Default to "low" for speed; only upgrade when explicitly requested
     quality = os.environ.get("GPT_IMAGE_QUALITY", "low")
     compress_jpg = env_flag("INFOGRAPHIC_COMPRESS_JPG", True)
@@ -207,78 +206,88 @@ def compress_to_jpg(image_path: str) -> str | None:
             print(f"   File size: {size_kb:.1f} KB")
             return jpg_path
         except Exception as exc:
-            print(f"Pillow compression failed, trying fallback: {exc}")
+            print(f"Pillow compression failed: {exc}")
 
-    # ── Platform fallbacks ──
+    # ── Platform-specific fallbacks (only if Pillow is unavailable or failed) ──
 
-    # macOS: sips
     if IS_MACOS:
-        try:
-            command = [
-                "sips", "-s", "format", "jpeg",
-                "-s", "formatOptions", "82",
-            ]
-            target_width = int(os.environ.get("INFOGRAPHIC_JPG_MAX_WIDTH", "1024"))
-            source_width = _get_image_width_sips(str(source))
-            if source_width and source_width > target_width:
-                command.extend(["--resampleWidth", str(target_width)])
-            command.extend([str(source), "--out", jpg_path])
+        return _compress_jpg_macos(str(source), jpg_path)
+    elif IS_WINDOWS:
+        return _compress_jpg_windows(str(source), jpg_path)
+    else:
+        return _compress_jpg_linux(str(source), jpg_path)
 
-            result = subprocess.run(command, capture_output=True, text=True, timeout=30)
-            if result.returncode != 0 or not Path(jpg_path).exists():
-                print(f"sips compression failed: {result.stderr}")
-                return None
 
-            source.unlink(missing_ok=True)
+def _compress_jpg_macos(source_path: str, jpg_path: str) -> str | None:
+    """macOS: use sips (system built-in)."""
+    try:
+        command = [
+            "sips", "-s", "format", "jpeg",
+            "-s", "formatOptions", "82",
+        ]
+        target_width = int(os.environ.get("INFOGRAPHIC_JPG_MAX_WIDTH", "1024"))
+        source_width = _get_image_width_sips(source_path)
+        if source_width and source_width > target_width:
+            command.extend(["--resampleWidth", str(target_width)])
+        command.extend([source_path, "--out", jpg_path])
+
+        result = subprocess.run(command, capture_output=True, text=True, timeout=30)
+        if result.returncode != 0 or not Path(jpg_path).exists():
+            print(f"sips compression failed: {result.stderr}")
+            return None
+
+        Path(source_path).unlink(missing_ok=True)
+        size_kb = Path(jpg_path).stat().st_size / 1024
+        print(f"Compressed to JPG (sips): {jpg_path} ({size_kb:.1f} KB)")
+        return jpg_path
+    except Exception as exc:
+        print(f"sips compression error: {exc}")
+        return None
+
+
+def _compress_jpg_windows(source_path: str, jpg_path: str) -> str | None:
+    """Windows: use PowerShell + System.Drawing (built-in)."""
+    try:
+        ps_command = (
+            f'Add-Type -AssemblyName System.Drawing; '
+            f'$img = [System.Drawing.Image]::FromFile("{source_path}"); '
+            f'$bmp = New-Object System.Drawing.Bitmap $img; '
+            f'$bmp.Save("{jpg_path}", [System.Drawing.Imaging.ImageFormat]::Jpeg); '
+            f'$img.Dispose(); $bmp.Dispose()'
+        )
+        result = subprocess.run(
+            ["powershell", "-NoProfile", "-Command", ps_command],
+            capture_output=True, text=True, timeout=30,
+        )
+        if result.returncode == 0 and Path(jpg_path).exists():
+            Path(source_path).unlink(missing_ok=True)
             size_kb = Path(jpg_path).stat().st_size / 1024
-            print(f"Compressed to JPG (sips fallback): {jpg_path}")
-            print(f"   File size: {size_kb:.1f} KB")
+            print(f"Compressed to JPG (PowerShell): {jpg_path} ({size_kb:.1f} KB)")
             return jpg_path
-        except Exception as exc:
-            print(f"sips fallback error: {exc}")
+        print(f"PowerShell compression failed: {result.stderr}")
+        return None
+    except Exception as exc:
+        print(f"PowerShell compression error: {exc}")
+        return None
 
-    # Windows: try .NET / PowerShell approach
-    if IS_WINDOWS:
-        try:
-            ps_command = (
-                f'Add-Type -AssemblyName System.Drawing; '
-                f'$img = [System.Drawing.Image]::FromFile("{source}"); '
-                f'$bmp = New-Object System.Drawing.Bitmap $img; '
-                f'$bmp.Save("{jpg_path}", [System.Drawing.Imaging.ImageFormat]::Jpeg); '
-                f'$img.Dispose(); $bmp.Dispose()'
-            )
-            result = subprocess.run(
-                ["powershell", "-NoProfile", "-Command", ps_command],
-                capture_output=True, text=True, timeout=30,
-            )
-            if result.returncode == 0 and Path(jpg_path).exists():
-                source.unlink(missing_ok=True)
-                size_kb = Path(jpg_path).stat().st_size / 1024
-                print(f"Compressed to JPG (PowerShell fallback): {jpg_path}")
-                print(f"   File size: {size_kb:.1f} KB")
-                return jpg_path
-            print(f"PowerShell compression failed: {result.stderr}")
-        except Exception as exc:
-            print(f"PowerShell fallback error: {exc}")
 
-    # Linux: try ImageMagick's convert
-    if not IS_WINDOWS and not IS_MACOS:
-        try:
-            result = subprocess.run(
-                ["convert", str(source), "-quality", "82", jpg_path],
-                capture_output=True, text=True, timeout=30,
-            )
-            if result.returncode == 0 and Path(jpg_path).exists():
-                source.unlink(missing_ok=True)
-                size_kb = Path(jpg_path).stat().st_size / 1024
-                print(f"Compressed to JPG (ImageMagick fallback): {jpg_path}")
-                print(f"   File size: {size_kb:.1f} KB")
-                return jpg_path
-            print(f"ImageMagick convert failed: {result.stderr}")
-        except Exception as exc:
-            print(f"ImageMagick fallback error: {exc}")
-
-    return None
+def _compress_jpg_linux(source_path: str, jpg_path: str) -> str | None:
+    """Linux: try ImageMagick convert (may need manual install)."""
+    try:
+        result = subprocess.run(
+            ["convert", source_path, "-quality", "82", jpg_path],
+            capture_output=True, text=True, timeout=30,
+        )
+        if result.returncode == 0 and Path(jpg_path).exists():
+            Path(source_path).unlink(missing_ok=True)
+            size_kb = Path(jpg_path).stat().st_size / 1024
+            print(f"Compressed to JPG (ImageMagick): {jpg_path} ({size_kb:.1f} KB)")
+            return jpg_path
+        print(f"ImageMagick convert failed: {result.stderr}")
+        return None
+    except Exception as exc:
+        print(f"ImageMagick error: {exc}")
+        return None
 
 
 def _get_image_width_sips(image_path: str) -> int:

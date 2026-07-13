@@ -315,7 +315,6 @@ def main() -> None:
         print("  GPT_IMAGE_BIN              - alternate command path")
         print("  INFOGRAPHIC_ASPECT_RATIO   - 1:1, 4:3, 3:4, 16:9, or 9:16")
         print("  GPT_IMAGE_QUALITY          - low, medium, high, or auto")
-        print("  INFOGRAPHIC_FAST_MODE=1    - lower-latency defaults")
         print("  INFOGRAPHIC_COMPRESS_JPG=0 - skip JPG compression")
         sys.exit(1)
 

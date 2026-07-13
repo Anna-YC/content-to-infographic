@@ -18,18 +18,13 @@ description: 将内容（文字、知识、插件信息、产品介绍等）转�
 
 | 环境变量 | 说明 | 示例 |
 |---------|------|------|
-| `INFOGRAPHIC_FOOTER_BRAND` | 样式1-3的默认落款品牌（可选） | `Your Community` |
-| `INFOGRAPHIC_FAST_MODE` | 快速模式（可选，默认已用低质量） | `1` |
-| `INFOGRAPHIC_IMAGE_SIZE` | 覆盖默认尺寸（可选） | `864x1536` |
-| `INFOGRAPHIC_COMPRESS_JPG` | 是否压缩为 JPG（可选） | `1` |
+| `INFOGRAPHIC_FOOTER_BRAND` | 样式1-3的默认落款品牌（可选） | `Your Brand` |
+| `INFOGRAPHIC_ASPECT_RATIO` | 图片比例（可选，默认 9:16） | `9:16` |
+| `GPT_IMAGE_QUALITY` | 生图质量（可选，默认 low） | `medium` |
+| `INFOGRAPHIC_JPG_MAX_WIDTH` | JPG 压缩最大宽度（可选，默认 1024） | `1024` |
+| `INFOGRAPHIC_COMPRESS_JPG` | 是否压缩为 JPG（默认开启，设 0 关闭） | `0` |
 
-> ⚠️ 生成服务凭证缺失时无法生成图片。脚本会读取本机环境变量或 `.env` 文件，但公开仓库不保存这些配置。
-
-### 本地配置文件
-
-脚本会自动读取 `GPT_IMAGE_CONFIG` 指定的 `.env` 文件；未指定时读取 `~/.config/gpt-image/.env`（macOS/Linux）或 `%USERPROFILE%\.config\gpt-image\.env`（Windows）。环境变量已存在时，以当前环境变量为准。
-
-> 公开发布时只提交脚本和说明，不提交 `.env`。
+> ⚠️ 生成服务凭证缺失时无法生成图片。凭证通过本机环境变量配置，公开仓库不保存这些配置。
 
 ### Python 依赖
 
@@ -55,7 +50,7 @@ pip install Pillow
 2. 环境变量 `INFOGRAPHIC_FOOTER_BRAND`
 3. 默认占位 `Your Brand`
 
-最终落款格式建议为：`By <品牌名> ♦ YYYY.MM.DD`。样式4-11默认不加落款。
+最终落款格式建议为：`By <品牌名> ♦ YYYY.MM.DD`。样式4-20默认不加落款。
 
 ---
 
@@ -63,7 +58,7 @@ pip install Pillow
 
 | 用户说... | 执行动作 |
 |---------|---------|
-| "把这个做成信息图" | → 接收内容 → 分析结构 → **随机选备用样式4-20**，对用户**不说样式编号** |
+| "把这个做成信息图" | → 接收内容 → 分析结构 → **随机选备用样式**，对用户**不说样式编号** |
 | "用样式1" | → 深色科技风（方法论/工具） |
 | "用样式2" | → 渐变流体风（趋势/创新） |
 | "用样式3" | → 轻松学习风（知识/教程） |
@@ -87,9 +82,9 @@ pip install Pillow
 | "生成插件介绍图" | → 样式1 + 能力+法则+避坑 |
 | "做科普海报" | → 样式3 + 知识点解读 |
 | "做对比图" | → 样式2 + 数据对比 |
-| 直接粘贴内容（未指定样式） | → **随机选备用样式4-20其一** |
+| 直接粘贴内容（未指定样式） | → **随机选备用样式** |
 
-> ⚠️ **未指定样式时**：随机选择备用样式（4-20）中的一种，无落款。
+> ⚠️ **未指定样式时**：随机选择备用样式（4-20）中的一种，无落款。详见核心工作流程 Step 2。
 
 ---
 
@@ -713,29 +708,18 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 6. 返回本地图片路径，或按当前 Agent 环境支持的方式发送附件
 
 ### 关键约束（必须遵守）
-1. **不生成二维码**：所有图片均不生成二维码，Prompt中禁止包含QR码相关描述
+1. **不生成二维码**：参见主文档"关键约束"
 2. **未指定样式**：随机选4-20，不加落款，且**不告诉用户选了哪个样式**
 3. **不在公开内容写入凭证或服务地址**：这些只放在本机配置中
 
 ### 关键配置
-- 默认落款品牌：`INFOGRAPHIC_FOOTER_BRAND`（可选，仅样式1-3使用）
-- 模型：gpt-image-2
-- 尺寸：1024x1792
-- 默认质量：`low`（最快，约 80s）
-- 高质量模式：`GPT_IMAGE_QUALITY=medium`（约 170s）或 `high`（更慢，精细度高）
-- 快速模式：`INFOGRAPHIC_FAST_MODE=1`（兼容保留，效果等同于默认 low）
-
-### 落款规则（重要）
-| 样式 | 是否有落款 |
-|-----|------------|
-| 1、2、3 | ✅ 有（通过 `INFOGRAPHIC_FOOTER_BRAND` 环境变量配置，未设置则使用 `Your Brand`） |
-| 4、5、6、7、8、9、10、11、12、13、14、15、16、17、18、19、20 | ❌ 无（备用样式） |
+- 模型：gpt-image-2，尺寸：1024x1792，默认质量：`low`（约 80s）
+- 高质量模式：设置 `GPT_IMAGE_QUALITY=medium` 或 `high`
+- 落款：参见主文档"自定义落款"和 Step 3
 
 ### 随机样式选择（Python示例）
 ```python
 import random
-# 用户未指定样式时，随机选4-20之一
-backup_styles = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+backup_styles = list(range(4, 21))  # 4-20
 chosen_style = random.choice(backup_styles)
-print(f"随机选择样式{chosen_style}")
 ```

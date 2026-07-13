@@ -700,7 +700,7 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 2. **判断：用户是否指定了样式？**
    - 指定了 → 用指定样式
    - 未指定 → **随机选样式4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20其中之一**
-3. 按模板构建Prompt（注意落款规则：样式1-3有落款，4-11无落款）
+3. 按模板构建Prompt（注意落款规则：样式1-3有落款，4-20无落款）
 4. **直接运行脚本**：
    ```bash
    # macOS / Linux
@@ -714,7 +714,7 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 
 ### 关键约束（必须遵守）
 1. **不生成二维码**：所有图片均不生成二维码，Prompt中禁止包含QR码相关描述
-2. **未指定样式**：随机选4-11，不加落款，且**不告诉用户选了哪个样式**
+2. **未指定样式**：随机选4-20，不加落款，且**不告诉用户选了哪个样式**
 3. **不在公开内容写入凭证或服务地址**：这些只放在本机配置中
 
 ### 关键配置
@@ -734,7 +734,7 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 ### 随机样式选择（Python示例）
 ```python
 import random
-# 用户未指定样式时，随机选4-11之一
+# 用户未指定样式时，随机选4-20之一
 backup_styles = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 chosen_style = random.choice(backup_styles)
 print(f"随机选择样式{chosen_style}")

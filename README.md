@@ -2,7 +2,7 @@
 
 将结构化内容（文字、知识、插件信息、产品介绍、数据对比等）转化为专业视觉海报。
 
-输入一段文字 → 输出专业信息图海报（9:16 竖版）。
+输入一段文字 → 输出专业信息图海报（默认 9:16 竖版，可选 16:9 / 1:1 / 3:4 / 4:3）。
 
 ---
 
@@ -66,7 +66,7 @@
 | 环境变量 | 说明 | 默认值 |
 |---------|------|--------|
 | `INFOGRAPHIC_FOOTER_BRAND` | 默认落款品牌（可选，所有样式通用） | `Your Brand` |
-| `INFOGRAPHIC_ASPECT_RATIO` | 图片比例 | `9:16` |
+| `INFOGRAPHIC_ASPECT_RATIO` | 图片比例（默认 9:16，可选 16:9/1:1/3:4/4:3） | `16:9` |
 | `GPT_IMAGE_QUALITY` | 生图质量 | `low` |
 | `INFOGRAPHIC_JPG_MAX_WIDTH` | JPG 压缩最大宽度 | `1024` |
 | `INFOGRAPHIC_COMPRESS_JPG` | 是否压缩为 JPG（设 0 关闭） | 开启 |
@@ -122,7 +122,7 @@ python3 scripts/generate_infographic.py "<prompt>" /tmp/output.png
 ## 技术细节
 
 - 模型：gpt-image-2
-- 尺寸：1024x1792（竖版 9:16）
+- 尺寸：默认 1024x1792（9:16），可选 16:9 / 1:1 / 3:4 / 4:3
 - 默认质量：low（约 80-140s）
 - 高质量模式：设置 `GPT_IMAGE_QUALITY=medium` 或 `high`
 - 跨平台 JPG 压缩：Pillow → macOS sips → Windows PowerShell → Linux ImageMagick

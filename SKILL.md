@@ -19,7 +19,7 @@ description: 将内容（文字、知识、插件信息、产品介绍等）转�
 | 环境变量 | 说明 | 示例 |
 |---------|------|------|
 | `INFOGRAPHIC_FOOTER_BRAND` | 默认落款品牌（可选，所有样式通用） | `Your Brand` |
-| `INFOGRAPHIC_ASPECT_RATIO` | 图片比例（可选，默认 9:16） | `9:16` |
+| `INFOGRAPHIC_ASPECT_RATIO` | 图片比例（可选，默认 9:16） | `16:9` |
 | `GPT_IMAGE_QUALITY` | 生图质量（可选，默认 low） | `medium` |
 | `INFOGRAPHIC_JPG_MAX_WIDTH` | JPG 压缩最大宽度（可选，默认 1024） | `1024` |
 | `INFOGRAPHIC_COMPRESS_JPG` | 是否压缩为 JPG（默认开启，设 0 关闭） | `0` |
@@ -82,6 +82,9 @@ pip install Pillow
 | "生成插件介绍图" | → 样式1 + 能力+法则+避坑 |
 | "做科普海报" | → 样式3 + 知识点解读 |
 | "做对比图" | → 样式2 + 数据对比 |
+| "做横版图" / "用16:9" | → 横版 16:9 比例 |
+| "做正方形图" / "用1:1" | → 正方形 1:1 比例 |
+| "用3:4" / "用4:3" | → 对应竖版/横版比例 |
 | 直接粘贴内容（未指定样式） | → **随机选备用样式** |
 
 > ⚠️ **未指定样式时**：随机选择备用样式（4-20）中的一种，默认无落款。详见核心工作流程 Step 2。
@@ -95,7 +98,8 @@ pip install Pillow
 默认质量：low（最快，约 80-90 秒）
 高质量模式：设置 GPT_IMAGE_QUALITY=medium 或 high（用户明确要求高质量时使用）
 超时：由 GPT_IMAGE_CURL_MAX_TIME 控制（默认 900 秒）
-尺寸：1024x1792（竖版9:16）
+尺寸：默认 1024x1792（竖版 9:16）
+可选比例：9:16（竖版，默认）、16:9（横版）、1:1（正方形）、3:4（竖版）、4:3（横版）
 跨平台：
   - Pillow 压缩 → macOS / Linux / Windows 全平台支持（推荐）
   - sips 降级 → macOS 系统自带
@@ -530,7 +534,7 @@ DENSE infographic [比例] [背景描述],
 [落款（可选）]
 ```
 
-**比例：** `9:16`（竖版）
+**比例：** 默认 `9:16`（竖版），可选 `16:9`（横版）、`1:1`（正方形）、`3:4`（竖版）、`4:3`（横版）。通过环境变量 `INFOGRAPHIC_ASPECT_RATIO` 或用户指定设置。
 
 **高密度必加：** `DENSE infographic, HIGH DENSITY sections, minimal whitespace, every pixel counts`
 
@@ -712,7 +716,7 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 3. **不在公开内容写入凭证或服务地址**：这些只放在本机配置中
 
 ### 关键配置
-- 模型：gpt-image-2，尺寸：1024x1792，默认质量：`low`（约 80s）
+- 模型：gpt-image-2，默认尺寸：1024x1792（9:16），可选 16:9/1:1/3:4/4:3，默认质量：`low`（约 80s）
 - 高质量模式：设置 `GPT_IMAGE_QUALITY=medium` 或 `high`
 - 落款：参见主文档"自定义落款"和 Step 3
 

@@ -8,105 +8,40 @@
 
 ## 🎨 效果预览
 
-### 样式 1 — 深色科技风
-> 工具/方法论/技术架构 · 深Navy底+橙色高亮
+| 样式 1：深色科技风 | 样式 2：渐变流体风 | 样式 3：轻松学习风 |
+|---|---|---|
+| 工具/方法论/技术架构 | 趋势/创新/数据对比 | 知识/教程/避坑指南 |
+| <img src="examples/style1-cn-preview.jpg" alt="样式1" width="200"> | <img src="examples/style2-cn-preview.jpg" alt="样式2" width="200"> | <img src="examples/style3-cn-preview.jpg" alt="样式3" width="200"> |
 
-<img src="examples/style1-cn-preview.jpg" alt="样式1：深色科技风" width="300">
+| 样式 4：宫崎骏风格 | 样式 5：复古海报风 | 样式 6：赛博霓虹风 |
+|---|---|---|
+| 治愈系/自然主题 | 历史/经典/怀旧 | 未来/科技/酷炫 |
+| <img src="examples/style4-cn-preview.jpg" alt="样式4" width="200"> | <img src="examples/style5-cn-preview.jpg" alt="样式5" width="200"> | <img src="examples/style6-cn-preview.jpg" alt="样式6" width="200"> |
 
-### 样式 2 — 渐变流体风
-> 趋势/创新/数据对比 · 紫蓝渐变+玻璃拟态
+| 样式 7：自然森系风 | 样式 8：杂志编辑风 | 样式 9：蛋仔风格 |
+|---|---|---|
+| 环保/可持续发展 | 深度文章/高端内容 | 年轻化/可爱/游戏 |
+| <img src="examples/style7-cn-preview.jpg" alt="样式7" width="200"> | <img src="examples/style8-cn-preview.jpg" alt="样式8" width="200"> | <img src="examples/style9-cn-preview.jpg" alt="样式9" width="200"> |
 
-<img src="examples/style2-cn-preview.jpg" alt="样式2：渐变流体风" width="300">
+| 样式 10：新海诚风格 | 样式 11：素描风格 | 样式 12：极简商务风 |
+|---|---|---|
+| 风景/电影感/浪漫 | 艺术/手绘/简约 | 商务汇报/企业培训 |
+| <img src="examples/style10-cn-preview.jpg" alt="样式10" width="200"> | <img src="examples/style11-cn-preview.jpg" alt="样式11" width="200"> | <img src="examples/style12-cn-preview.jpg" alt="样式12" width="200"> |
 
-### 样式 3 — 轻松学习风
-> 知识/教程/避坑指南 · 白→浅黄渐变+手绘图标
+| 样式 13：水墨国风 | 样式 14：像素游戏风 | 样式 15：波普艺术风 |
+|---|---|---|
+| 传统文化/东方美学 | 游戏/编程/复古 | 潮流/品牌/创意 |
+| <img src="examples/style13-cn-preview.jpg" alt="样式13" width="200"> | <img src="examples/style14-cn-preview.jpg" alt="样式14" width="200"> | <img src="examples/style15-cn-preview.jpg" alt="样式15" width="200"> |
 
-<img src="examples/style3-cn-preview.jpg" alt="样式3：轻松学习风" width="300">
+| 样式 16：科幻太空风 | 样式 17：蒸汽朋克风 | 样式 18：孟菲斯设计风 |
+|---|---|---|
+| 未来科技/太空探索 | 机械/工业/复古科技 | 创意/艺术/年轻化 |
+| <img src="examples/style16-cn-preview.jpg" alt="样式16" width="200"> | <img src="examples/style17-cn-preview.jpg" alt="样式17" width="200"> | <img src="examples/style18-cn-preview.jpg" alt="样式18" width="200"> |
 
-### 样式 4 — 宫崎骏风格
-> 治愈系/自然主题 · 水彩手绘+吉卜力美学
-
-<img src="examples/style4-cn-preview.jpg" alt="样式4：宫崎骏风格" width="300">
-
-### 样式 5 — 复古海报风
-> 历史/经典/怀旧 · 奶油纸纹+粗衬线体
-
-<img src="examples/style5-cn-preview.jpg" alt="样式5：复古海报风" width="300">
-
-### 样式 6 — 赛博霓虹风
-> 未来/科技/酷炫 · 纯黑底+霓虹发光
-
-<img src="examples/style6-cn-preview.jpg" alt="样式6：赛博霓虹风" width="300">
-
-### 样式 7 — 自然森系风
-> 可持续发展/环保/温和 · 鼠尾草绿+植物插画
-
-<img src="examples/style7-cn-preview.jpg" alt="样式7：自然森系风" width="300">
-
-### 样式 8 — 杂志编辑风
-> 深度文章/高端内容 · 暖白底+金色分隔线+左右分栏
-
-<img src="examples/style8-cn-preview.jpg" alt="样式8：杂志编辑风" width="300">
-
-### 样式 9 — 蛋仔风格
-> 年轻化/可爱/游戏 · 粉彩+圆润蛋仔角色
-
-<img src="examples/style9-cn-preview.jpg" alt="样式9：蛋仔风格" width="300">
-
-### 样式 10 — 新海诚风格
-> 风景/电影感/浪漫 · 蔚蓝天空+戏剧性光影
-
-<img src="examples/style10-cn-preview.jpg" alt="样式10：新海诚风格" width="300">
-
-### 样式 11 — 素描风格
-> 艺术/手绘/简约 · 黑白铅笔灰阶
-
-<img src="examples/style11-cn-preview.jpg" alt="样式11：素描风格" width="300">
-
-### 样式 12 — 极简商务风
-> 商务汇报/企业培训 · 白底+深灰+金点缀
-
-<img src="examples/style12-cn-preview.jpg" alt="样式12：极简商务风" width="300">
-
-### 样式 13 — 水墨国风
-> 传统文化/东方美学 · 宣纸纹理+墨色+朱砂
-
-<img src="examples/style13-cn-preview.jpg" alt="样式13：水墨国风" width="300">
-
-### 样式 14 — 像素游戏风
-> 游戏/编程/复古 · 8-bit像素+高饱和原色
-
-<img src="examples/style14-cn-preview.jpg" alt="样式14：像素游戏风" width="300">
-
-### 样式 15 — 波普艺术风
-> 潮流/品牌/创意 · 大胆撞色+半色调网点
-
-<img src="examples/style15-cn-preview.jpg" alt="样式15：波普艺术风" width="300">
-
-### 样式 16 — 科幻太空风
-> 未来科技/太空探索 · 星云背景+全息投影
-
-<img src="examples/style16-cn-preview.jpg" alt="样式16：科幻太空风" width="300">
-
-### 样式 17 — 蒸汽朋克风
-> 机械/工业/复古科技 · 黄铜齿轮+维多利亚装饰
-
-<img src="examples/style17-cn-preview.jpg" alt="样式17：蒸汽朋克风" width="300">
-
-### 样式 18 — 孟菲斯设计风
-> 创意/艺术/年轻化 · 几何色块+大胆撞色
-
-<img src="examples/style18-cn-preview.jpg" alt="样式18：孟菲斯设计风" width="300">
-
-### 样式 19 — 日式浮世绘风
-> 日本文化/和风/艺术 · 木版画+靛蓝朱红
-
-<img src="examples/style19-cn-preview.jpg" alt="样式19：日式浮世绘风" width="300">
-
-### 样式 20 — 3D 等距风
-> 数据可视化/产品展示 · C4D质感+漂浮平台
-
-<img src="examples/style20-cn-preview.jpg" alt="样式20：3D等距风" width="300">
+| 样式 19：日式浮世绘风 | 样式 20：3D 等距风 | |
+|---|---|---|
+| 日本文化/和风/艺术 | 数据可视化/产品展示 | |
+| <img src="examples/style19-cn-preview.jpg" alt="样式19" width="200"> | <img src="examples/style20-cn-preview.jpg" alt="样式20" width="200"> | |
 
 ---
 

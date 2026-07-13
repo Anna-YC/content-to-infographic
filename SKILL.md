@@ -1,6 +1,6 @@
 ---
 name: content-to-infographic
-description: 将内容（文字、知识、插件信息、产品介绍等）转化为专业视觉海报。当用户要求"把这个做成信息图"、"生成插件介绍图"、"做一个科普海报"、"做能力对比图"、"用样式1/2/3/4/5/6/7/8/9/10/11"，或讨论信息图、视觉卡片、图说生成时触发。
+description: 将内容（文字、知识、插件信息、产品介绍等）转化为专业视觉海报。当用户要求"把这个做成信息图"、"生成插件介绍图"、"做一个科普海报"、"做能力对比图"、"用样式1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20"，或讨论信息图、视觉卡片、图说生成时触发。
 ---
 
 # Content To Infographic
@@ -63,7 +63,7 @@ pip install Pillow
 
 | 用户说... | 执行动作 |
 |---------|---------|
-| "把这个做成信息图" | → 接收内容 → 分析结构 → **随机选备用样式4-11**，对用户**不说样式编号** |
+| "把这个做成信息图" | → 接收内容 → 分析结构 → **随机选备用样式4-20**，对用户**不说样式编号** |
 | "用样式1" | → 深色科技风（方法论/工具） |
 | "用样式2" | → 渐变流体风（趋势/创新） |
 | "用样式3" | → 轻松学习风（知识/教程） |
@@ -72,15 +72,24 @@ pip install Pillow
 | "用样式6" | → 赛博霓虹风 |
 | "用样式7" | → 自然森系风 |
 | "用样式8" | → 杂志编辑风 |
-| "用样式9" | → 宫崎骏风格（备用II） |
+| "用样式9" | → 蛋仔风格（可爱） |
 | "用样式10" | → 新海诚风格 |
 | "用样式11" | → 素描风格 |
+| "用样式12" | → 极简商务风 |
+| "用样式13" | → 水墨国风 |
+| "用样式14" | → 像素游戏风 |
+| "用样式15" | → 波普艺术风 |
+| "用样式16" | → 科幻太空风 |
+| "用样式17" | → 蒸汽朋克风 |
+| "用样式18" | → 孟菲斯设计风 |
+| "用样式19" | → 日式浮世绘风 |
+| "用样式20" | → 3D等距风 |
 | "生成插件介绍图" | → 样式1 + 能力+法则+避坑 |
 | "做科普海报" | → 样式3 + 知识点解读 |
 | "做对比图" | → 样式2 + 数据对比 |
-| 直接粘贴内容（未指定样式） | → **随机选备用样式4-11其一** |
+| 直接粘贴内容（未指定样式） | → **随机选备用样式4-20其一** |
 
-> ⚠️ **未指定样式时**：随机选择备用样式（4-11）中的一种，无落款。
+> ⚠️ **未指定样式时**：随机选择备用样式（4-20）中的一种，无落款。
 
 ---
 
@@ -111,15 +120,24 @@ pip install Pillow
 | 2 | 渐变流体风 | 可自定义，如 By Your Brand ♦ YYYY.MM.DD | 趋势/创新/数据对比 |
 | 3 | 轻松学习风 | 可自定义，如 By Your Brand ♦ YYYY.MM.DD | 知识/教程/避坑指南 |
 | 4 | 宫崎骏风格 | 无 | 通用/备用/治愈系 |
-| 5 | 复古海报风 | 无 | 通用/备用 |
-| 6 | 赛博霓虹风 | 无 | 通用/备用 |
-| 7 | 自然森系风 | 无 | 通用/备用 |
-| 8 | 杂志编辑风 | 无 | 通用/备用 |
-| 9 | 宫崎骏风格（备用II） | 无 | 通用/备用/治愈系 |
+| 5 | 复古海报风 | 无 | 通用/备用/怀旧 |
+| 6 | 赛博霓虹风 | 无 | 通用/备用/未来感 |
+| 7 | 自然森系风 | 无 | 通用/备用/环保 |
+| 8 | 杂志编辑风 | 无 | 通用/备用/高端 |
+| 9 | 蛋仔风格 | 无 | 通用/备用/可爱 |
 | 10 | 新海诚风格 | 无 | 通用/备用/风景 |
 | 11 | 素描风格 | 无 | 通用/备用/艺术 |
+| 12 | 极简商务风 | 无 | 通用/备用/商务 |
+| 13 | 水墨国风 | 无 | 通用/备用/国潮 |
+| 14 | 像素游戏风 | 无 | 通用/备用/怀旧游戏 |
+| 15 | 波普艺术风 | 无 | 通用/备用/潮流 |
+| 16 | 科幻太空风 | 无 | 通用/备用/科幻 |
+| 17 | 蒸汽朋克风 | 无 | 通用/备用/机械 |
+| 18 | 孟菲斯设计风 | 无 | 通用/备用/创意 |
+| 19 | 日式浮世绘风 | 无 | 通用/备用/和风 |
+| 20 | 3D等距风 | 无 | 通用/备用/立体 |
 
-> 样式4-11为**备用样式**，无落款。用户未指定样式时，随机选用其中之一。
+> 样式4-20为**备用样式**，无落款。用户未指定样式时，随机选用其中之一。
 
 ---
 
@@ -317,6 +335,161 @@ pencil stroke textures, no color pure sketch drawing style
 
 ---
 
+### 样式12：极简商务风
+
+**适用场景：** 通用备用，适合商务汇报/企业培训/管理方法论/产品Roadmap
+**落款：** 无
+**配色：** 白底#FFFFFF + 深灰#333333 + 蓝灰#607D8B + 点缀金#C9A84C
+**风格：** 极简主义美学，大量留白，细线分隔，几何图标，无衬线体排版，瑞士设计感，优雅克制，高端商务调性
+
+```
+Prompt关键词：
+MINIMALIST business infographic, white background with generous whitespace,
+dark gray + slate blue + gold accent, geometric line icons,
+clean sans-serif typography, thin dividing lines,
+Swiss design aesthetic, elegant restrained layout,
+professional corporate style, high-end minimalism
+```
+
+---
+### 样式13：水墨国风
+
+**适用场景：** 通用备用，适合传统文化/国学内容/东方美学/中式品牌
+**落款：** 无
+**配色：** 米白宣纸底#F5F0E8 + 墨黑#1A1A1A + 朱砂红#C41E3A + 淡青#7BA7BC
+**风格：** 中国传统水墨画美学，宣纸纹理背景，毛笔笔触，墨色浓淡层次，朱砂印章点缀，竖排文字选项，留白意境，山水云雾元素
+
+```
+Prompt关键词：
+CHINESE ink wash painting infographic, rice paper texture background,
+black ink + vermillion red + pale celadon, brush stroke calligraphy,
+ink gradients light to dark, red seal stamp accents,
+mountain mist cloud elements, traditional Chinese aesthetic,
+elegant negative space, scholarly refined atmosphere
+```
+
+---
+### 样式14：像素游戏风
+
+**适用场景：** 通用备用，适合游戏主题/编程入门/童年回忆/复古科技
+**落款：** 无
+**配色：** 像素色盘：亮绿#00FF00 + 品红#FF00FF + 青#00FFFF + 黄#FFFF00（8-bit 调色板）
+**风格：** 复古像素艺术美学，8-bit/16-bit游戏风格，锯齿边缘，像素字体，方块状UI元素，NES/红白机时代感，高饱和原色，点阵图案边框
+
+```
+Prompt关键词：
+PIXEL ART retro game infographic, 8-bit 16-bit video game style,
+blocky pixel typography, pixelated borders and icons,
+bright saturated primary colors, NES retro gaming aesthetic,
+jagged pixel edges, sprite-style decorations,
+arcade game UI elements, nostalgic gaming vibe
+```
+
+---
+### 样式15：波普艺术风
+
+**适用场景：** 通用备用，适合潮流文化/品牌营销/创意内容/社交媒体
+**落款：** 无
+**配色：** 鲜艳原色碰撞：亮红#FF0000 + 黄#FFD700 + 宝蓝#1E3A8A + 白#FFFFFF
+**风格：** 波普艺术美学（Andy Warhol风格），大胆配色，半色调网点纹理，粗黑描边，重复图案，漫画风格对话框，丝网印刷质感，高对比高冲击
+
+```
+Prompt关键词：
+POP ART infographic, bold vibrant color blocks,
+halftone dot patterns, thick black outlines, comic book style speech bubbles,
+Andy Warhol aesthetic, screen print texture,
+repeating graphic patterns, high contrast high impact,
+playful bold pop culture vibe, Ben-Day dots effect
+```
+
+---
+### 样式16：科幻太空风
+
+**适用场景：** 通用备用，适合未来科技/太空探索/科幻内容/前沿趋势
+**落款：** 无
+**配色：** 深邃太空黑#0A0A0F + 星云紫#6B2FA0 + 恒星金#FFD700 + 科技蓝#00BFFF
+**风格：** 太空科幻美学，星云背景，星轨线条，发光文字，全息投影感，行星/轨道元素，深邃宇宙氛围，科技面板边框
+
+```
+Prompt关键词：
+SCI-FI space infographic, deep cosmic space background,
+nebula purple + star gold + tech blue, holographic UI elements,
+star trails and orbital rings, glowing neon text on dark,
+planet and constellation motifs, futuristic spacecraft dashboard,
+deep universe atmosphere, cosmic wonder aesthetic
+```
+
+---
+### 样式17：蒸汽朋克风
+
+**适用场景：** 通用备用，适合机械主题/工业历史/手工匠人/复古科技
+**落款：** 无
+**配色：** 铜锈棕#8B6914 + 黄铜金#C5A44E + 深棕#3E2723 + 羊皮纸#F5DEB3
+**风格：** 蒸汽朋克美学，齿轮和机械元素，维多利亚时代装饰，黄铜和铜材质纹理，皮革背景，怀表/飞艇/齿轮图标，复古排版，金属铆钉边框
+
+```
+Prompt关键词：
+STEAMPUNK infographic, brass and copper mechanical aesthetic,
+gears cogs clockwork elements, Victorian-era ornate decorations,
+warm brown leather + brass gold + copper tones,
+parchment paper texture background, riveted metal borders,
+retro industrial revolution vibe, mechanical gear icons
+```
+
+---
+### 样式18：孟菲斯设计风
+
+**适用场景：** 通用备用，适合创意设计/艺术内容/品牌故事/年轻化营销
+**落款：** 无
+**配色：** 粉#FF6B6B + 薄荷绿#4ECDC4 + 黄#FFE66D + 紫#6C5CE7 + 白底（孟菲斯标志性配色）
+**风格：** 孟菲斯设计美学（80年代意大利后现代），几何色块拼贴，波浪线和锯齿线，波点图案，大胆撞色，非对称布局，趣味涂鸦感，反叛传统设计的活泼感
+
+```
+Prompt关键词：
+MEMPHIS design infographic, geometric color blocks collage,
+squiggly lines and zigzag patterns, polka dot textures,
+bold clashing colors pink+mint+yellow+purple on white,
+asymmetric playful layout, 80s postmodern Italian design,
+abstract geometric shapes, fun creative rebellious aesthetic
+```
+
+---
+### 样式19：日式浮世绘风
+
+**适用场景：** 通用备用，适合日本文化/旅行主题/东方美学/艺术内容
+**落款：** 无
+**配色：** 靛蓝#1B2A4A + 朱红#D64045 + 金黄#E8A838 + 米白#F2E8D5
+**风格：** 浮世绘美学，木版画纹理，渐变色彩（bokashi技法），海浪和富士山元素，和风图案边框，竖排日文装饰，和纸纹理背景
+
+```
+Prompt关键词：
+UKIYO-E Japanese woodblock print infographic,
+indigo blue + vermillion red + golden yellow + cream,
+woodblock texture effect, Hokusai wave motifs,
+bokashi color gradation, traditional Japanese patterns border,
+washi paper texture background, Edo period aesthetic,
+elegant oriental artistic atmosphere
+```
+
+---
+### 样式20：3D等距风
+
+**适用场景：** 通用备用，适合数据可视化/产品展示/流程说明/技术图解
+**落款：** 无
+**配色：** 柔和渐变底 + 珊瑚橙#FF6F61 + 湖水蓝#5B9BD5 + 草绿#70AD47 + 暖灰#D9D9D9
+**风格：** 3D等距插画美学，等角投影视角，立体几何建筑块，柔和光照和阴影，圆润边角3D元素，漂浮小岛式布局，现代扁平3D风格，C4D质感
+
+```
+Prompt关键词：
+ISOMETRIC 3D infographic, 3D isometric illustration style,
+soft lighting with gentle shadows, rounded 3D geometric blocks,
+floating platform island layout, C4D-style rendering,
+coral orange + teal blue + grass green palette,
+modern flat 3D aesthetic, clean volumetric design
+```
+
+---
+
 ## 核心工作流程
 
 ### Step 1 — 接收内容，分析结构
@@ -336,7 +509,7 @@ pencil stroke textures, no color pure sketch drawing style
   → 按该样式的落款规则处理
 
 情况B：用户未指定样式
-  → 随机选择备用样式之一：4、5、6、7、8、9、10、11（等概率随机）
+  → 随机选择备用样式之一：4、5、6、7、8、9、10、11、12、13、14、15、16、17、18、19、20（等概率随机）
   → 不添加落款
   → **不告诉用户选了哪个样式**，只说"重新制作 ✅"或"已生成 ✅"
 ```
@@ -348,7 +521,7 @@ pencil stroke textures, no color pure sketch drawing style
 AI工具/插件/方法论 → 样式1
 AI趋势/新技术/创新 → 样式2
 AI知识点/教程/避坑 → 样式3
-未指定样式 → 随机选4/5/6/7/8/9/10/11
+未指定样式 → 随机选4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20
 ```
 
 ### Step 3 — 构建 Prompt
@@ -368,7 +541,7 @@ DENSE infographic [比例] [背景描述],
 
 **落款规则：**
 - 样式1-3：可加自定义落款（如 `Corner small: 'By Your Brand ♦ 2026.05.25'`）。若用户未指定，优先使用环境变量 `INFOGRAPHIC_FOOTER_BRAND`；未设置时使用 `Your Brand` 占位。
-- 样式4-11：**不加落款**
+- 样式4-20：**不加落款**
 
 ### Step 4 — 调用生图脚本
 
@@ -435,7 +608,7 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 落款：By Your Brand ♦ YYYY.MM.DD
 ```
 
-### 通用版（样式4-11，无落款）
+### 通用版（样式4-20，无落款）
 ```
 标题：[主题]
 内容模块（3-6个）：根据内容类型选择
@@ -476,9 +649,18 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
   - {主题}-style6.jpg  (样式6，赛博霓虹)
   - {主题}-style7.jpg  (样式7，自然森系)
   - {主题}-style8.jpg  (样式8，杂志编辑)
-  - {主题}-style9.jpg  (样式9，宫崎骏II)
+  - {主题}-style9.jpg  (样式9，蛋仔)
   - {主题}-style10.jpg (样式10，新海诚)
   - {主题}-style11.jpg (样式11，素描)
+  - {主题}-style12.jpg (样式12，极简商务)
+  - {主题}-style13.jpg (样式13，水墨国风)
+  - {主题}-style14.jpg (样式14，像素游戏)
+  - {主题}-style15.jpg (样式15，波普艺术)
+  - {主题}-style16.jpg (样式16，科幻太空)
+  - {主题}-style17.jpg (样式17，蒸汽朋克)
+  - {主题}-style18.jpg (样式18，孟菲斯)
+  - {主题}-style19.jpg (样式19，浮世绘)
+  - {主题}-style20.jpg (样式20，3D等距)
   - 样式4预览：/tmp/style4-ghibli-preview.png/jpg
   - 样式5预览：/tmp/style5-preview.png/jpg
   - 样式6预览：/tmp/style6-preview.png/jpg
@@ -487,6 +669,15 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
   - 样式9预览：/tmp/style9-preview.png/jpg
   - 样式10预览：/tmp/style10-preview.png/jpg
   - 样式11预览：/tmp/style11-preview.png/jpg
+  - 样式12预览：/tmp/style12-preview.png/jpg
+  - 样式13预览：/tmp/style13-preview.png/jpg
+  - 样式14预览：/tmp/style14-preview.png/jpg
+  - 样式15预览：/tmp/style15-preview.png/jpg
+  - 样式16预览：/tmp/style16-preview.png/jpg
+  - 样式17预览：/tmp/style17-preview.png/jpg
+  - 样式18预览：/tmp/style18-preview.png/jpg
+  - 样式19预览：/tmp/style19-preview.png/jpg
+  - 样式20预览：/tmp/style20-preview.png/jpg
 ```
 
 ---
@@ -500,15 +691,15 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 - 用户说"做个信息图"
 - 用户说"把这个做成图"
 - 用户说"生成一张科普海报"
-- 用户说"用样式1/2/3/4/5/6/7/8/9/10/11"
+- 用户说"用样式1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20"
 - 用户粘贴了一段内容想让AI做成视觉图
-- 用户未指定样式 → 随机选4-11之一
+- 用户未指定样式 → 随机选4-20之一
 
 ### 怎么用（最简流程）
 1. 接收用户内容
 2. **判断：用户是否指定了样式？**
    - 指定了 → 用指定样式
-   - 未指定 → **随机选样式4/5/6/7/8/9/10/11其中之一**
+   - 未指定 → **随机选样式4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20其中之一**
 3. 按模板构建Prompt（注意落款规则：样式1-3有落款，4-11无落款）
 4. **直接运行脚本**：
    ```bash
@@ -538,13 +729,13 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 | 样式 | 是否有落款 |
 |-----|------------|
 | 1、2、3 | ✅ 有（对应三个社群） |
-| 4、5、6、7、8、9、10、11 | ❌ 无（备用样式） |
+| 4、5、6、7、8、9、10、11、12、13、14、15、16、17、18、19、20 | ❌ 无（备用样式） |
 
 ### 随机样式选择（Python示例）
 ```python
 import random
 # 用户未指定样式时，随机选4-11之一
-backup_styles = [4, 5, 6, 7, 8, 9, 10, 11]
+backup_styles = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 chosen_style = random.choice(backup_styles)
 print(f"随机选择样式{chosen_style}")
 ```

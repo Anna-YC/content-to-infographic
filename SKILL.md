@@ -19,7 +19,7 @@ description: 将内容（文字、知识、插件信息、产品介绍等）转�
 | 环境变量 | 说明 | 示例 |
 |---------|------|------|
 | `INFOGRAPHIC_FOOTER_BRAND` | 样式1-3的默认落款品牌（可选） | `Your Community` |
-| `INFOGRAPHIC_FAST_MODE` | 快速模式，适合测试和草稿（可选） | `1` |
+| `INFOGRAPHIC_FAST_MODE` | 快速模式（可选，默认已用低质量） | `1` |
 | `INFOGRAPHIC_IMAGE_SIZE` | 覆盖默认尺寸（可选） | `864x1536` |
 | `INFOGRAPHIC_COMPRESS_JPG` | 是否压缩为 JPG（可选） | `1` |
 
@@ -27,9 +27,25 @@ description: 将内容（文字、知识、插件信息、产品介绍等）转�
 
 ### 本地配置文件
 
-脚本会自动读取 `GPT_IMAGE_CONFIG` 指定的 `.env` 文件；未指定时读取 `~/.config/gpt-image/.env`。环境变量已存在时，以当前环境变量为准。
+脚本会自动读取 `GPT_IMAGE_CONFIG` 指定的 `.env` 文件；未指定时读取 `~/.config/gpt-image/.env`（macOS/Linux）或 `%USERPROFILE%\.config\gpt-image\.env`（Windows）。环境变量已存在时，以当前环境变量为准。
 
 > 公开发布时只提交脚本和说明，不提交 `.env`。
+
+### Python 依赖
+
+**推荐安装 Pillow**（跨平台图片压缩）：
+
+```bash
+pip install Pillow
+```
+
+未安装时脚本会尝试平台原生降级方案：
+
+| 平台 | 降级方案 |
+|------|---------|
+| macOS | `sips` 命令（系统自带） |
+| Windows | PowerShell + System.Drawing（系统自带） |
+| Linux | ImageMagick `convert` 命令（需安装） |
 
 ### 自定义落款
 
@@ -72,9 +88,15 @@ description: 将内容（文字、知识、插件信息、产品介绍等）转�
 
 ```
 模型：gpt-image-2
-超时：由本机配置控制
+默认质量：low（最快，约 80-90 秒）
+高质量模式：设置 GPT_IMAGE_QUALITY=medium 或 high（用户明确要求高质量时使用）
+超时：由 GPT_IMAGE_CURL_MAX_TIME 控制（默认 900 秒）
 尺寸：1024x1792（竖版9:16）
-快速模式：INFOGRAPHIC_FAST_MODE=1 时使用更轻的默认参数
+跨平台：
+  - Pillow 压缩 → macOS / Linux / Windows 全平台支持（推荐）
+  - sips 降级 → macOS 系统自带
+  - PowerShell 降级 → Windows 系统自带
+  - ImageMagick 降级 → Linux（需自行安装）
 ```
 
 > 📌 使用者只需要运行 `scripts/generate_infographic.py`。服务地址和凭证由本机环境负责，不写入公开文档。
@@ -353,8 +375,14 @@ DENSE infographic [比例] [背景描述],
 > ⚠️ 调用前请确保本机已配置生图服务凭证。直接运行脚本即可，不要把凭证或服务地址写进 prompt、文档或仓库。
 
 ```bash
-# 直接运行脚本，传入 prompt 和输出路径
+# macOS / Linux
 python3 scripts/generate_infographic.py "<Step3的Prompt>" /tmp/output.png
+
+# Windows (PowerShell)
+python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
+
+# Windows (CMD)
+python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 ```
 
 脚本内部逻辑（无需手动实现）：
@@ -419,21 +447,26 @@ python3 scripts/generate_infographic.py "<Step3的Prompt>" /tmp/output.png
 ## 失败处理
 
 | 问题 | 解决 |
-|-----|------|
 | 提示缺少凭证 | 在本机 `.env` 或运行环境中设置生图服务凭证 |
-| 生成超时 | 精简 Prompt，或提高本机超时配置 |
-| 生成速度慢 | 测试/草稿用 `INFOGRAPHIC_FAST_MODE=1`；最终图再使用高清配置 |
+| `gpt-image` 命令找不到 | 安装 CLI 工具，或设置 `INFOGRAPHIC_IMAGE_COMMAND` / `GPT_IMAGE_BIN` 环境变量指定路径<br>Windows 还会查找 `%USERPROFILE%\bin\gpt-image.exe` 和 `%USERPROFILE%\AppData\Local\gpt-image\gpt-image.exe` |
+| Pillow 未安装 | 运行 `pip install Pillow`；未安装时脚本会自动使用平台降级方案（macOS sips / Windows PowerShell / Linux ImageMagick） |
+| 生成超时 | 精简 Prompt，或设置 `GPT_IMAGE_CURL_MAX_TIME` 提高超时上限（默认 900s） |
+| 命令执行失败（exit code ≠ 0） | 检查生图服务是否正常运行，查看 stdout/stderr 输出定位原因 |
+| 生成速度慢 | 默认已用 low 质量（约 80s）；用户明确要求高质量时设 `GPT_IMAGE_QUALITY=medium` 或 `high` |
 | 发送或上传失败 | 优先返回本地文件路径，再由具体 Agent 环境处理附件发送 |
-| 图片模糊 | 确认sips压缩比例≥82 |
+| 图片模糊 | 确认 JPG 压缩质量≥82 |
 | 图片包含二维码 | 从Prompt中删除所有QR码相关描述，重新生成 |
 | 信息密度不够 | Prompt加：`DENSE infographic, HIGH DENSITY, every pixel counts` |
+| JPG 压缩失败 | 推荐安装 Pillow：`pip install Pillow`（全平台可用）<br>未安装时：macOS 用 sips ✓ / Windows 用 PowerShell ✓ / Linux 需 ImageMagick (`apt install imagemagick` 或 `brew install imagemagick`) |
 
 ---
 
 ## 文件规范
 
 ```
-保存路径：/tmp/
+保存路径：
+  macOS / Linux：/tmp/
+  Windows：%TEMP% 或当前目录
 命名格式：
   - {主题}-style1.jpg  (样式1)
   - {主题}-style2.jpg  (样式2)
@@ -477,8 +510,15 @@ python3 scripts/generate_infographic.py "<Step3的Prompt>" /tmp/output.png
    - 指定了 → 用指定样式
    - 未指定 → **随机选样式4/5/6/7/8/9/10/11其中之一**
 3. 按模板构建Prompt（注意落款规则：样式1-3有落款，4-11无落款）
-4. **直接运行脚本** `python3 scripts/generate_infographic.py "<prompt>" /tmp/output.png`
-5. 脚本自动完成 sips 压缩转 JPG
+4. **直接运行脚本**：
+   ```bash
+   # macOS / Linux
+   python3 scripts/generate_infographic.py "<prompt>" /tmp/output.png
+
+   # Windows
+   python scripts/generate_infographic.py "<prompt>" %TEMP%\output.png
+   ```
+5. 脚本自动完成 JPG 压缩（Pillow 跨平台 → 平台原生降级方案）
 6. 返回本地图片路径，或按当前 Agent 环境支持的方式发送附件
 
 ### 关键约束（必须遵守）
@@ -490,7 +530,9 @@ python3 scripts/generate_infographic.py "<Step3的Prompt>" /tmp/output.png
 - 默认落款品牌：`INFOGRAPHIC_FOOTER_BRAND`（可选，仅样式1-3使用）
 - 模型：gpt-image-2
 - 尺寸：1024x1792
-- 快速模式：`INFOGRAPHIC_FAST_MODE=1`
+- 默认质量：`low`（最快，约 80s）
+- 高质量模式：`GPT_IMAGE_QUALITY=medium`（约 170s）或 `high`（更慢，精细度高）
+- 快速模式：`INFOGRAPHIC_FAST_MODE=1`（兼容保留，效果等同于默认 low）
 
 ### 落款规则（重要）
 | 样式 | 是否有落款 |

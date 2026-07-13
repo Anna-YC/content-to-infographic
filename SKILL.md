@@ -728,7 +728,7 @@ python scripts/generate_infographic.py "<Step3的Prompt>" C:\temp\output.png
 ### 落款规则（重要）
 | 样式 | 是否有落款 |
 |-----|------------|
-| 1、2、3 | ✅ 有（对应三个社群） |
+| 1、2、3 | ✅ 有（通过 `INFOGRAPHIC_FOOTER_BRAND` 环境变量配置，未设置则使用 `Your Brand`） |
 | 4、5、6、7、8、9、10、11、12、13、14、15、16、17、18、19、20 | ❌ 无（备用样式） |
 
 ### 随机样式选择（Python示例）
